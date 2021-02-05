@@ -8,6 +8,12 @@ For eg, we have 30K sites, cluster them into around 50 clustered nodes and displ
 Cluster Algo: GeoHash
 	There are other possibilities as well. We should try some to see which one is best suited for us. K-Means seems one such Algo found frequently on internet
 
-Database: PostgreSQL + PostGIS
+Database
+	PostgreSQL + PostGIS
 	Other popular alternative is ElasticSearch which supports geohash based clustering natively
+---------------------------------
+
+WebAPI
+	Expose an HTTP endpoint for UI consumption, and access database
+	Use DotNet Core 3.1, and NpgSql Nuget
 
