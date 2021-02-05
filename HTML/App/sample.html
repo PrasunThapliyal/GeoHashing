@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Markers</title>
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=default"></script>
+    <script
+      src="https://maps.googleapis.com/maps/api/js?key=<YOUR_KEY_HERE>&callback=initMap&libraries=&v=weekly"
+      defer
+    ></script>
+    <link rel="stylesheet" type="text/css" href="./style.css" />
+    <script src="./index.js"></script>
+  </head>
+  <body>
+	<div>
+		<label>Precision: </label>
+		<input id="Precision" type="text" value="2" />
+		<button id="Fetch" onclick="fetchDataAsync()">Fetch</button>
+		<button id="Clear" onclick="deleteMarkers()">Clear</button>
+		
+		<div id="map"></div>
+	</div>
+  </body>
+</html>

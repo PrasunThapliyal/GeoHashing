@@ -16,4 +16,8 @@ Database
 WebAPI
 	Expose an HTTP endpoint for UI consumption, and access database
 	Use DotNet Core 3.1, and NpgSql Nuget
+---------------------------------
 
+UI
+	Create simplest possible UI
+	Calls WebAPI to get clustered points to display on a Google Map 
