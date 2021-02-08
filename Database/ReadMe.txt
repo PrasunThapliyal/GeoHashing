@@ -40,3 +40,10 @@ geonames=#
 geonames=# cluster allcountries using allcountries_geom_idx;
 CLUSTER
 geonames=#
+
+geonames=# cluster allcountries using allcountries_geom_idx;
+CLUSTER
+geonames=#
+geonames=# update allcountries set geohash = ST_GeoHash(geom);
+UPDATE 1479415
+geonames=#

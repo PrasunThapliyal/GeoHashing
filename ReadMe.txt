@@ -1,4 +1,4 @@
-05  Feb 2021
+05 Feb 2021
 ============
 
 Objective:
@@ -21,3 +21,20 @@ WebAPI
 UI
 	Create simplest possible UI
 	Calls WebAPI to get clustered points to display on a Google Map 
+========================
+
+08 Feb 2021
+-----------
+
+On Performance
+	1. The allcountries table has around 1.4+ million points
+	2. group by ST_GeoHash(geom, {precision})
+		a. no index, precision = 1, all world => 12 sec
+		b. with clustered index, 7 to 8 sec
+		c. on a subset of 42K points => 440 ms, on a subset of 17K points => 350 ms
+	3. substring(geohash, 1, {precision}) as cluster_hash, group by cluster_hash
+		a. no index on string column, precision = 1, all world => xx sec
+			seemed like it gave incorrect/different results
+		b. indexed, precision = 1, all world => 17 sec, 23 sec, 7 sec, 8 sec ??
+		c. On smaller subsets, seems either equivalent or slower than using ST_GeoHash
+

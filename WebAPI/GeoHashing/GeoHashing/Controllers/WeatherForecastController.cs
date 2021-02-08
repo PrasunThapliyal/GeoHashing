@@ -71,6 +71,18 @@ namespace GeoHashing.Controllers
                 $"group by ST_GeoHash(geom, {precision});";
 
 
+            //// Create a string column geohash
+            //var sqlStatement =
+            //    $"select count(geohash), substring(geohash, 1, {precision}) as cluster_hash, " +
+            //    $"ST_X(ST_Centroid(ST_Collect(geom))), ST_Y(ST_Centroid(ST_Collect(geom)))" +
+            //    "from ( " +
+            //        "select geohash, geom from allcountries " +
+            //        $"where ST_Contains(ST_MakeEnvelope({lngSouthWest}, {latSouthWest}, {lngNorthEast}, {latNorthEast}, 4326), geom) " +
+            //    ") as bbox " +
+            //    $"group by cluster_hash;";
+
+            Console.WriteLine(sqlStatement);
+
             await using var cmd = new NpgsqlCommand(sqlStatement, conn);
             await using var reader = await cmd.ExecuteReaderAsync();
             var data1List = await GetData1(reader).ConfigureAwait(false);
