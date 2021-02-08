@@ -50,16 +50,26 @@ namespace GeoHashing.Controllers
             await using var conn = new NpgsqlConnection(_connectionString);
             await conn.OpenAsync();
 
+            // This works - cluster center is the center of geohash
+            //var sqlStatement =
+            //    $"select count(aname1), ST_GeoHash(geom, {precision}), " +
+            //    $"ST_X(ST_PointFromGeoHash(ST_GeoHash(geom, {precision}))), ST_Y(ST_PointFromGeoHash(ST_GeoHash(geom, {precision})))" +
+            //    "from ( " +
+            //        "select aname1, geom from allcountries " +
+            //        $"where ST_Contains(ST_MakeEnvelope({lngSouthWest}, {latSouthWest}, {lngNorthEast}, {latNorthEast}, 4326), geom) " +
+            //    ") as bbox " +
+            //    $"group by ST_GeoHash(geom, {precision});";
+
+            // ST_Centroid works better than ST_PointFromGeoHash
             var sqlStatement =
                 $"select count(aname1), ST_GeoHash(geom, {precision}), " +
-                $"ST_X(ST_PointFromGeoHash(ST_GeoHash(geom, {precision}))), ST_Y(ST_PointFromGeoHash(ST_GeoHash(geom, {precision})))" +
+                $"ST_X(ST_Centroid(ST_Collect(geom))), ST_Y(ST_Centroid(ST_Collect(geom)))" +
                 "from ( " +
                     "select aname1, geom from allcountries " +
-                    //"where ST_Contains(ST_MakeEnvelope(-180,0,0,90, 4326), geom) " +
                     $"where ST_Contains(ST_MakeEnvelope({lngSouthWest}, {latSouthWest}, {lngNorthEast}, {latNorthEast}, 4326), geom) " +
-                    //$"where ST_Contains(ST_MakeEnvelope({bottomRightLongitude}, {bottomRightLatitude}, {topLeftLongitude}, {topLeftLatitude}, 4326), geom) " +
                 ") as bbox " +
                 $"group by ST_GeoHash(geom, {precision});";
+
 
             await using var cmd = new NpgsqlCommand(sqlStatement, conn);
             await using var reader = await cmd.ExecuteReaderAsync();
